@@ -5,7 +5,7 @@ Thumbs.db
 # --- IDEs y Herramientas ---
 .vscode/
 .idea/
-.vs/     <--- AGREGÁ ESTA LÍNEA
+.vs/  
 *.suo
 *.user
 
