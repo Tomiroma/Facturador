@@ -15,7 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\" />
+    <Folder Include="Features\Facturas\Commands\" />
+    <Folder Include="Features\Usuarios\Commands\" />
   </ItemGroup>
 
 </Project>
