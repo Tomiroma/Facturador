@@ -14,6 +14,6 @@ namespace Application.Models.Responses
         public string CUIT { get; set; } = string.Empty;
         public string? Email { get; set; }
         public string? Telefono { get; set; }
-        public int DiasPlazoPago { get; set; }
+        public int? DiasPlazoPago { get; set; }
     }
 }

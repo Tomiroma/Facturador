@@ -14,7 +14,7 @@ namespace Domain.Entities
         public string? Email { get; set; }
 
         public string? Telefono { get; set; }
-        public int DiasPlazoPago { get; set; }
+        public int? DiasPlazoPago { get; set; }
 
         public int UsuarioId { get; set; }
 
