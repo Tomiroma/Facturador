@@ -32,15 +32,13 @@ namespace Application.Features.Clientes.Commands
                 throw new Exception("El CUIT ingresado ya pertenece a otro cliente.");
             }
 
-            var usuario = await _userRepository.GetByIdAsync(request.UsuarioId);
-            if (usuario == null) throw new Exception("Usuario no válido.");
 
             cliente.RazonSocial = request.RazonSocial;
             cliente.CUIT = request.CUIT;
             cliente.Email = request.Email;
             cliente.Telefono = request.Telefono;
             cliente.DiasPlazoPago = request.DiasPlazoPago;
-            cliente.UsuarioId = request.UsuarioId;
+            cliente.UsuarioId = 1;
 
             await _repository.UpdateAsync(cliente);
             await _repository.SaveChangesAsync();

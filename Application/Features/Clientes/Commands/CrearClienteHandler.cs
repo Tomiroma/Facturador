@@ -13,12 +13,10 @@ namespace Application.Features.Clientes.Commands
     public class CrearClienteHandler : IRequestHandler<ClienteRequest, ClienteResponse>
     {
         private readonly IClienteRepository _repository;
-        private readonly IUserRepository _userRepository;
 
-        public CrearClienteHandler(IClienteRepository repository, IUserRepository userRepository)
+        public CrearClienteHandler(IClienteRepository repository)
         {
             _repository = repository;
-            _userRepository = userRepository;
         }
 
         public async Task<ClienteResponse> Handle(ClienteRequest request, CancellationToken ct)
@@ -28,12 +26,6 @@ namespace Application.Features.Clientes.Commands
             if (existente != null)
             {
                 throw new Exception("Ya existe un cliente con ese CUIT.");
-            }
-
-            var usuario = _userRepository.GetByIdAsync(request.UsuarioId);
-            if (usuario == null)
-            {
-                throw new Exception($"Error: No se encontró un usuario con el ID {request.UsuarioId}. El cliente debe estar vinculado a un usuario válido.");
             }
 
 
@@ -46,7 +38,7 @@ namespace Application.Features.Clientes.Commands
                 Email = request.Email,
                 Telefono = request.Telefono,
                 DiasPlazoPago = request.DiasPlazoPago,
-                UsuarioId = request.UsuarioId,
+                UsuarioId = 1
 
             };
 

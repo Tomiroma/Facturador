@@ -25,6 +25,5 @@ namespace Application.Models.Requests
         [Range(1, int.MaxValue, ErrorMessage = "Los días deben ser mayores a 0.")]
         public int DiasPlazoPago { get; set; }
 
-        public int UsuarioId { get; set; }
     }
 }

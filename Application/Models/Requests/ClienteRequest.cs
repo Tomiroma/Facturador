@@ -27,8 +27,7 @@ namespace Application.Models.Requests
         [Range(1, int.MaxValue, ErrorMessage = "Los días de plazo de pago deben ser mayorres a 0.")]
         public int? DiasPlazoPago { get; set; }
 
-        [Required(ErrorMessage = "El ID de usuario es obligatorio.")]
-        public int UsuarioId { get; set; }
+
 
     }
 }

@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Models.Requests
 {
-    public class DeleteClienteRequest : IRequest<GenericResponse>
+    public class GetAllClientesRequest: IRequest<List<ClienteResponse>>
     {
-        public int Id { get; set; }
     }
 }
