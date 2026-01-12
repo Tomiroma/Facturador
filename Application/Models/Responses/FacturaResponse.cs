@@ -15,7 +15,7 @@ namespace Application.Models.Responses
         public DateTime? FechaVencimiento { get; set; }
         public DateTime? FechaDePago { get; set; }
 
-        public decimal ImportetTotal { get; set; }
+        public decimal ImporteTotal { get; set; }
         public decimal ImporteNeto { get; set; }
         public decimal ImporteIva { get; set; }
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     public class Factura
     {
@@ -16,9 +10,13 @@ namespace Domain.Entities
         public DateTime? FechaDePago { get; set; }
         public decimal ImporteTotal { get; set; }
         public string? Observaciones { get; set; }
-        
+
         public int ClienteId { get; set; }
         public Cliente Cliente { get; set; } = null!;
+
+        public DateTime FechaLimiteCobro => Cliente != null
+            ? FechaEmision.AddDays((double)(Cliente.DiasPlazoPago ?? 0))
+            : FechaEmision;
 
         public decimal CalcularIva() => ImporteTotal - (ImporteTotal / 1.21m);
 
@@ -29,10 +27,11 @@ namespace Domain.Entities
             get
             {
                 if (FechaDePago.HasValue) return "Pagada";
-                if (FechaVencimiento.HasValue && FechaVencimiento < DateTime.Now) return "Vencida";
+
+                if (DateTime.Now > FechaLimiteCobro) return "Reclamar Pago";
+
                 return "Pendiente";
             }
         }
-
     }
 }
