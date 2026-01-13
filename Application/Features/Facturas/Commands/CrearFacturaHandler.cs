@@ -25,16 +25,33 @@ namespace Application.Features.Facturas.Commands
             var cliente = await _clienteRepository.GetByIdAsync(request.ClienteId);
             if (cliente == null) throw new Exception("Cliente no encontrado.");
 
+            if (request.ImporteTotal <= 0)
+                throw new Exception("El importe total de la factura debe ser mayor a cero.");
+
+            var facturaExistente = await _repository.GetByNumComprobante(request.NumeroComprobante);
+            if (facturaExistente != null)
+                throw new Exception($"La factura {request.NumeroComprobante} ya fue cargada anteriormente.");
+
             if (request.FechaEmision == default)
             {
                 request.FechaEmision = DateTime.Now; 
+            }
+
+            if (request.FechaVencimiento.HasValue && request.FechaVencimiento < request.FechaEmision)
+                throw new Exception("La fecha de vencimiento legal no puede ser anterior a la fecha de emisión.");
+
+            DateTime? fechaEsperada = null;
+
+            if (cliente.DiasPlazoPago.HasValue && cliente.DiasPlazoPago.Value > 0)
+            {
+                fechaEsperada = request.FechaEmision.AddDays((double)cliente.DiasPlazoPago.Value);
             }
 
             var nuevaFactura = new Factura
             {
                 NumeroComprobante = request.NumeroComprobante,
                 FechaEmision = request.FechaEmision,
-                FechaVencimiento = request.FechaVencimiento,
+                FechaVencimiento = fechaEsperada,
                 ImporteTotal = request.ImporteTotal,
                 Observaciones = request.Observaciones,
                 ClienteId = request.ClienteId,

@@ -1,24 +1,21 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore; 
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence
 {
-    public class ApplicationDbContext : DbContext
+
+    public class ApplicationDbContext : IdentityDbContext<Usuario>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<Usuario> Usuarios { get; set; } = null!;
+    
         public DbSet<Cliente> Clientes { get; set; } = null!;
-
         public DbSet<Factura> Facturas { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Esta línea es VITAL. Configura las tablas internas de Identity (claves primarias, etc.)
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Cliente>()

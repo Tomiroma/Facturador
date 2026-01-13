@@ -8,15 +8,14 @@
         public DateTime FechaEmision { get; set; }
         public DateTime? FechaVencimiento { get; set; }
         public DateTime? FechaDePago { get; set; }
+
         public decimal ImporteTotal { get; set; }
         public string? Observaciones { get; set; }
 
         public int ClienteId { get; set; }
         public Cliente Cliente { get; set; } = null!;
 
-        public DateTime FechaLimiteCobro => Cliente != null
-            ? FechaEmision.AddDays((double)(Cliente.DiasPlazoPago ?? 0))
-            : FechaEmision;
+      
 
         public decimal CalcularIva() => ImporteTotal - (ImporteTotal / 1.21m);
 
@@ -28,7 +27,7 @@
             {
                 if (FechaDePago.HasValue) return "Pagada";
 
-                if (DateTime.Now > FechaLimiteCobro) return "Reclamar Pago";
+                if (DateTime.Now > FechaVencimiento) return "Reclamar Pago";
 
                 return "Pendiente";
             }

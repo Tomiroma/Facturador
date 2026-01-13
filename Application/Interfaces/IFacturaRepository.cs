@@ -20,5 +20,9 @@ namespace Application.Interfaces
         Task UpdateAsync(Factura factura);
         Task SaveChangesAsync();
 
+        Task<Factura?> GetByNumComprobante(string numComprobante);
+
+        Task DeleteAsync(int id);
+
     }
 }

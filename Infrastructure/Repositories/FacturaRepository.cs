@@ -24,9 +24,19 @@ namespace Infrastructure.Repositories
             await _context.Facturas.AddAsync(factura);
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            var factura = await _context.Facturas.FindAsync(id);
+            if (factura != null)
+            {
+                _context.Facturas.Remove(factura);
+            }
+        }
+
         public async Task<IEnumerable<Factura>> GetAllAsync()
         {
             return await _context.Facturas
+                .Include(f => f.Cliente)
                 .OrderByDescending(f => f.FechaEmision)
                 .ToListAsync();
         }
@@ -44,6 +54,13 @@ namespace Infrastructure.Repositories
             return await _context.Facturas
                 .Include(f => f.Cliente)
                 .FirstOrDefaultAsync(f => f.Id == id);
+        }
+
+        public async Task<Factura?> GetByNumComprobante(string numComprobante)
+        {
+            return await _context.Facturas
+               .Include(f => f.Cliente)
+               .FirstOrDefaultAsync(f => f.NumeroComprobante == numComprobante);
         }
 
         public async Task<IEnumerable<Factura>> GetByPeriodo(DateTime inicio, DateTime fin)
