@@ -38,7 +38,7 @@ namespace Application.Features.Clientes.Commands
                 Email = request.Email,
                 Telefono = request.Telefono,
                 DiasPlazoPago = request.DiasPlazoPago,
-                UsuarioId = 1
+                UsuarioId = "1"
 
             };
 

@@ -15,7 +15,7 @@ namespace Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Esta línea es VITAL. Configura las tablas internas de Identity (claves primarias, etc.)
+            
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Cliente>()

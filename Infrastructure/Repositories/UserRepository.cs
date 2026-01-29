@@ -19,9 +19,9 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Usuario?> GetByIdAsync(int id)
+        public async Task<Usuario?> GetByIdAsync(string id)
         {
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             
         }
     }

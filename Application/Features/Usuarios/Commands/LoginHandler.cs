@@ -1,31 +1,70 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Application.Models.Requests;
+using Application.Models.Responses;
+using Domain.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt; 
+using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Usuarios.Commands
 {
-    public class LoginHandler
+    public class LoginHandler : IRequestHandler<LoginRequest, AuthResponse>
     {
-    }
-    public async Task<AuthResponse> Handle(LoginRequest request, CancellationToken ct)
+        private readonly UserManager<Usuario> _userManager;
+        private readonly IConfiguration _configuration;
+
+        public LoginHandler(UserManager<Usuario> userManager, IConfiguration configuration)
         {
-            // 1. Buscar el usuario
-            var user = await _userManager.FindByEmailAsync(request.Email);
-            if (user == null) throw new Exception("Credenciales incorrectas.");
+            _userManager = userManager;
+            _configuration = configuration;
+        }
 
-            // 2. Verificar la contraseña (Identity hace el hashing automático)
-            var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+        public async Task<AuthResponse> Handle(LoginRequest request, CancellationToken ct)
+        {
+            var usuario = await _userManager.FindByEmailAsync(request.Email);
 
-            if (result.Succeeded)
+            if (usuario == null) return new AuthResponse { Success = false, Message = "Usuario no encontrado" };
+
+            var resultado = await _userManager.CheckPasswordAsync(usuario, request.Password);
+
+            if (!resultado) return new AuthResponse { Success = false, Message = "Contraseña Incorrecta" };
+
+            var token = GenerarTokenJwt(usuario);
+
+            return new AuthResponse
             {
-                // 3. Generar el Token JWT
-                var token = GenerarJwtToken(user);
-                return new AuthResponse { Token = token, Success = true };
-            }
+                Success = true,
+                Token = token,
+                NombreCompleto = usuario.NombreCompleto,
+                Message = "Bienvenido de nuevo Dieguito"
+            };
 
-            throw new Exception("Credenciales incorrectas.");
+
+        }
+        private string GenerarTokenJwt(Usuario usuario)
+        {
+            var claims = new List<Claim> {
+        new Claim(ClaimTypes.NameIdentifier, usuario.Id),
+        new Claim(ClaimTypes.Email, usuario.Email!),
+        new Claim("NombreCompleto", usuario.NombreCompleto),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // ID único del token
+    };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddHours(8),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
+}

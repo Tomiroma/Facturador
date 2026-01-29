@@ -52,9 +52,10 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task UpdateAsync(Cliente cliente)
+        public Task UpdateAsync(Cliente cliente)
         {
             _context.Clientes.Update(cliente);
+            return Task.CompletedTask;
         }
 
         public async Task SaveChangesAsync()

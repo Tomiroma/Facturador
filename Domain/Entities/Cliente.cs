@@ -16,7 +16,7 @@ namespace Domain.Entities
         public string? Telefono { get; set; }
         public int? DiasPlazoPago { get; set; }
 
-        public int UsuarioId { get; set; }
+        public string UsuarioId { get; set; }
 
         public Usuario Usuario { get; set; } = null!; //Operador de perdón de nulos, parece nulo ahora pero cuando alguien lo use va a tener un valor
 

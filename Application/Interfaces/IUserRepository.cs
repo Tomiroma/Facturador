@@ -9,6 +9,6 @@ namespace Application.Interfaces
 {
     public interface IUserRepository
     {
-        Task<Usuario?> GetByIdAsync(int id);
+        Task<Usuario?> GetByIdAsync(string id);
     }
 }

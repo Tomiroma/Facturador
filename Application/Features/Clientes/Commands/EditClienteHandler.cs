@@ -38,7 +38,7 @@ namespace Application.Features.Clientes.Commands
             cliente.Email = request.Email;
             cliente.Telefono = request.Telefono;
             cliente.DiasPlazoPago = request.DiasPlazoPago;
-            cliente.UsuarioId = 1;
+            cliente.UsuarioId = "1";
 
             await _repository.UpdateAsync(cliente);
             await _repository.SaveChangesAsync();
