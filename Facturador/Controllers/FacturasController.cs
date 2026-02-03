@@ -109,5 +109,19 @@ namespace Facturador.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [HttpPatch("pagar")]
+        public async Task<IActionResult> Pagar([FromBody] RegistrarPagoRequest request)
+        {
+            try
+            {
+                var result = await _mediator.Send(request);
+                return result ? Ok(new { message = "Pago registrado" }) : NotFound();
+            }
+            catch (InvalidOperationException ex) 
+            {
+                return BadRequest(new { message = ex.Message }); 
+            }
+        }
     }
 }

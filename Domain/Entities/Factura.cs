@@ -32,5 +32,11 @@
                 return "Pendiente";
             }
         }
+
+        public void RegistrarPago(DateTime fecha)
+        {
+            this.FechaDePago = fecha;
+
+        }
     }
 }

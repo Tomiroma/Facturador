@@ -47,7 +47,7 @@ namespace Application.Features.Usuarios.Commands
         private string GenerarTokenJwt(Usuario usuario)
         {
             var claims = new List<Claim> {
-        new Claim(ClaimTypes.NameIdentifier, usuario.Id),
+        new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
         new Claim(ClaimTypes.Email, usuario.Email!),
         new Claim("NombreCompleto", usuario.NombreCompleto),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // ID único del token

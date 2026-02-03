@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,8 @@ namespace Domain.Entities
         public string? Telefono { get; set; }
         public int? DiasPlazoPago { get; set; }
 
-        public string UsuarioId { get; set; }
+        [ForeignKey("UsuarioId")]
+        public int UsuarioId { get; set; }
 
         public Usuario Usuario { get; set; } = null!; //Operador de perdón de nulos, parece nulo ahora pero cuando alguien lo use va a tener un valor
 

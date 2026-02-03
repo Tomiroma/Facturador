@@ -78,6 +78,7 @@ namespace Infrastructure.Repositories
         public async Task UpdateAsync(Factura factura)
         {
             _context.Facturas.Update(factura);
+            await _context.SaveChangesAsync(); 
         }
     }
 }

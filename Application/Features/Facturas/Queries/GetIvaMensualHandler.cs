@@ -27,13 +27,16 @@ namespace Application.Features.Facturas.Queries
             .Where(f => f.FechaEmision.Month == request.Mes && f.FechaEmision.Year == request.Anio)
             .ToList();
 
+            var totalNeto = facturasDelMes.Sum(f => f.CalcularNeto());
+            var totalIva = facturasDelMes.Sum(f => f.CalcularIva());
+
             return new IvaMensualResponse
             {
                 Mes = request.Mes,
                 Anio = request.Anio,
                 CantidadFacturas = facturasDelMes.Count,
-                TotalNeto = facturasDelMes.Sum(f => f.CalcularNeto()),
-                TotalIva = facturasDelMes.Sum(f => f.CalcularIva()),
+                TotalNeto = Math.Round(totalNeto, 2),
+                TotalIva = Math.Round(totalIva, 2),
                 TotalFacturado = facturasDelMes.Sum(f => f.ImporteTotal)
             };
         }
