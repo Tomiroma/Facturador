@@ -59,6 +59,8 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Appli
 
 var app = builder.Build();
 
+app.UseMiddleware<Facturador.API.Middleware.ExceptionMiddleware>();
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

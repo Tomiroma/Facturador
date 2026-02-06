@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Exceptions;
+using Application.Interfaces;
 using Application.Models.Requests;
 using MediatR;
 using System;
@@ -26,7 +27,7 @@ namespace Application.Features.Facturas.Commands
 
             if (factura.FechaDePago != null)
             {
-                throw new InvalidOperationException("La Factura ya fue pagada");
+                throw new BusinessException("La Factura ya fue pagada");
             }
 
             factura.RegistrarPago(request.FechaDePago);
